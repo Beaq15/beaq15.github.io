@@ -35,10 +35,7 @@ social:
   email: beatrice.marcu15@gmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://github.com/Beaq15 # change to your Twitter homepage
-    #- https://github.com/username # change to your GitHub homepage
-    # Uncomment below to add more social links
-    # - https://www.facebook.com/username
+    - https://github.com/Beaq15 
     - https://www.linkedin.com/in/beatrice-marcu-904656262/
 
 # Site Verification Settings
