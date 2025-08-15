@@ -18,8 +18,8 @@
   icon: 'fab fa-linkedin'
   url: 'https://www.linkedin.com/in/beatrice-marcu-904656262/'
 
-- type: itch.io
-  icon: 'fab fa-itch.io'
+- type: itchio
+  icon: 'fab fa-itch-io'
   url: 'https://beatrice-marcu.itch.io/'
 
 # - type: stack-overflow
