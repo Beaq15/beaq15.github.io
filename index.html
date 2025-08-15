@@ -14,35 +14,37 @@ layout: default
     <p>My hobbies include motorcycle riding, playing computer games, reading and travelling.</p>
   </div>
 </div>
+
+<style>
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;                 /* space between icons */
+    margin: 0 auto;
+  }
+  .skills figure { margin: 0; }
+  .skills .icon {
+    height: 56px;             /* <- control size here */
+    width: auto;
+    display: block;
+  }
+  @media (max-width: 576px) {  /* smaller on phones */
+    .skills .icon { height: 40px; }
+  }
+</style>
+
 <h2><b>Skills & Tools</b></h2>
                     
-                    <br>
-                    <div class="columns is-centered is-mobile is-multiline" style="overflow: auto">
-                        <figure class="column is-narrow">
-                            <img class="icon" src="/assets/cplus.png" alt="cplus">
-                        </figure>
-                        <figure class="column is-narrow">
-                            <img class="icon" src="/assets/csharp.png" alt="csharp">
-                        </figure>
-                        <figure class="column is-narrow">
-                            <img class="icon" src="/assets/visualstudio.png" alt="visualstudio">
-                        </figure>
-                        <figure class="column is-narrow">
-                            <img class="icon" src="/assets/visualstudiocode.png" alt="visualstudiocode">
-                        </figure>
-                        <figure class="column is-narrow">
-                            <img class="icon" src="/assets/unrealengine.png" alt="unrealengine">
-                        </figure>
-                        <figure class="column is-narrow">
-                            <img class="icon" src="/assets/unity.png" alt="unity">
-                        </figure>
-                        <figure class="column is-narrow">
-                            <img class="icon" src="/assets/github.jpg" alt="github">
-                        </figure>
-                      <figure class="column is-narrow">
-                            <img class="icon" src="/assets/perforce.png" alt="perforce">
-                        </figure>
-                    </div>
-                    <br>
-                    <div class="container columns is-centered">
-                  </div>
+                    <div class="skills">
+  <figure><img class="icon" src="/assets/cplus.png" alt="C++" loading="lazy" decoding="async"></figure>
+  <figure><img class="icon" src="/assets/csharp.png" alt="C#" loading="lazy" decoding="async"></figure>
+  <figure><img class="icon" src="/assets/visualstudio.png" alt="Visual Studio" loading="lazy" decoding="async"></figure>
+  <figure><img class="icon" src="/assets/visualstudiocode.png" alt="VS Code" loading="lazy" decoding="async"></figure>
+  <figure><img class="icon" src="/assets/unrealengine.png" alt="Unreal Engine" loading="lazy" decoding="async"></figure>
+  <figure><img class="icon" src="/assets/unity.png" alt="Unity" loading="lazy" decoding="async"></figure>
+  <figure><img class="icon" src="/assets/github.jpg" alt="GitHub" loading="lazy" decoding="async"></figure>
+  <figure><img class="icon" src="/assets/perforce.png" alt="Perforce" loading="lazy" decoding="async"></figure>
+</div>
+            
