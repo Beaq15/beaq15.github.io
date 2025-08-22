@@ -16,6 +16,4 @@ order: 1
 {% for post in posts %} {% include post-card.html %} {% endfor %}
 {% if paginator.total_pages > 1 %} {% include post-paginator.html %} {% endif %}
 </ul>
-{% else %}
-<p>No projects yet.</p>
-{% endif %}
+
