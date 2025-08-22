@@ -7,7 +7,7 @@ order: 1
 
 {% include lang.html %}
 
-{% assign all_posts = site.posts | where_exp: 'post', 'post.categories contains "Projects"' %}
+{% assign all_posts = site.posts | where: 'categories', 'Projects' %}
 
 {% assign pinned = all_posts | where: 'pin', 'true' %}
 {% assign default = all_posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
