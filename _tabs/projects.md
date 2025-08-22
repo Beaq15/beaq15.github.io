@@ -7,20 +7,13 @@ order: 1
 
 {% include lang.html %}
 
-{% assign all_posts = site.posts | where: 'categories', 'Projects' %}
+{% assign all_posts = site.categories.Projects %}
+{% assign pinned  = all_posts | where: 'pin', true %}
+{% assign default = all_posts | where_exp: 'p', 'p.pin != true and p.hidden != true' %}
+{% assign posts   = pinned | concat: default %}
 
-{% assign pinned = all_posts | where: 'pin', 'true' %}
-{% assign default = all_posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
+{% include post-list.html posts=posts %}
 
-{% assign posts = pinned | concat: default %}
-
-<div id="post-list" class="flex-grow-1 px-xl-1">
-  {% for post in posts %}
-    {% include post-card.html %}
-  {% endfor %}
-</div>
-<!-- #post-list -->
-
-{% if paginator.total_pages > 1 %}
+{% if paginator and paginator.total_pages > 1 %}
   {% include post-paginator.html %}
 {% endif %}
