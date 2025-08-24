@@ -1,0 +1,89 @@
+<style>
+    .custom-card-transition {
+        p {
+        margin-top: 0.5rem;
+        opacity: 0%;
+        transition: opacity .35s ease-in-out;
+        }
+        
+        .custom-background-image {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: -1;
+        opacity: 100%;
+        border-radius:10px;
+        }
+
+        .mask1 { 
+        mask: linear-gradient(to top, rgba(0,0,0,1) 70%, rgba(0,0,0,0.4) 80%,  rgba(0,0,0,0.1) 100%);
+        opacity: 100%;
+        transition: opacity .35s ease-in-out;
+        }
+
+        .mask2 {
+        mask: linear-gradient(rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.1) 100%);
+        opacity: 0%;
+        transition: opacity .35s ease-in-out;
+        }
+    }
+
+
+
+    .custom-card-transition:hover {
+        p {
+        opacity: 100%;
+        }
+
+        .mask1 { 
+        opacity: 0%;
+        }
+        
+        .mask2 {
+        opacity: 100%;
+        }
+    }
+</style>
+
+<article class="col">
+    <a href="{{ post.url | relative_url }}" class="post-preview card h-100 parent custom-card-transition" style="position:relative; background: none;" >
+        
+        <div class="card-body" style="z-index: 5;">
+            <h4 class="pt-0 mt-0">{{ post.title }}</h4>
+            <div class="text-muted" style="display: flex; justify-content: space-between; flex-direction: column;">
+                <div style="height: 6.5rem">
+                    <p>{% include post-description.html %}</p>
+                </div>
+                <div>
+                    {% for skill in post.skills %}
+                        {% assign tagcolor = "var(--main-bg)" %}
+                        {% if skill == "Team" %}
+                            {% assign tagcolor = "green" %}
+                        {% elsif skill == "Solo" %}
+                            {% assign tagcolor = "orange" %}
+                        {% elsif skill == "Steam" %}
+                            {% assign tagcolor = "blue" %}
+                        {% elsif skill == "Itch.io" %}
+                            {% assign tagcolor = "red" %}
+                        
+                        {% endif %}
+                        <div class="post-tag" style="background-color: color-mix(in srgb, var(--main-bg) 75%, {{ tagcolor }} 25%); color: var(--text-color);">{{ skill }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="child h-full w-100 custom-background-image mask1" style="
+                                                                    background: url({{ post.image.path }});
+                                                                    background-size: cover;
+                                                                    background-position: center center;
+                                                                    ">
+        </div>
+        <div class="child h-full w-100 custom-background-image mask2" style="
+                                                                    background: url({{ post.image.path }});
+                                                                    background-size: cover;
+                                                                    background-position: center center;
+                                                                    ">
+        </div>
+    </a>
+</article>
