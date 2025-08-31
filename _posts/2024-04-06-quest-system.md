@@ -9,7 +9,7 @@ description: Quest system for a rts game / Custom engine
 ## Gameplay
 
 <video width="320" height="240" controls>
-  <source src="/assets/questsystem/questchain.mp4" type="video/mp4">
+  <source src="/assets/questsystem/questchain.mp4" type="video/mp4" alt="Quest system">
 </video>
 
 ## General information
