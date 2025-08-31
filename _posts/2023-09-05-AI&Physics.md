@@ -157,12 +157,11 @@ I am also making all the obstacles in the game class by creating a polygonCollid
 
 My code can do three things in total:
 
--apply gravity to the agents
-<img src = "../assets/ai&physics/gravity.gif"></img>
--
--push the agents around
-<img src = "../assets/ai&physics/pushing.gif"></img>
--
--classic path following
-<img src = "../assets/ai&physics/normalbehaviour.gif"></img>
--
+-apply gravity to the agents  
+<img src="../assets/ai&physics/gravity.gif" alt="Agents moving with gravity applied">  
+
+-push the agents around  
+<img src="../assets/ai&physics/pushing.gif" alt="Player pushing agents around">  
+
+-classic path following  
+<img src="../assets/ai&physics/normalbehaviour.gif" alt="Agents following classic pathfinding behaviour">  
