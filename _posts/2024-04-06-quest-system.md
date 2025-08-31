@@ -9,7 +9,7 @@ description: Quest system for a rts game / Custom engine
 ## Gameplay
 
 <video width="320" height="240" controls>
-  <source src="../assets/questsystem/questchain.mp4" type="video/mp4">
+  <source src="/assets/questsystem/questchain.mp4" type="video/mp4">
 </video>
 
 ## General information
@@ -19,7 +19,7 @@ As part of a group project with seven programmers, I developed a quest system fo
 Initially, the system worked by displaying the next stage of a quest once all objectives in the current stage were completed. When every stage in a quest was finished, the quest would disappear after a two-second delay, and the following quest would appear. The system was first implemented using ImGui, and later I contributed to integrating it into the game’s UI.
 
 -quest system
-<img src = "../assets/questsystem/questevidence.gif"></img>
+<img src = "/assets/questsystem/questevidence.gif"></img>
 -
 
 Realizing that my initial quest system was not scalable, I refactored it by creating dedicated functions for generating and initializing quests, stages, and objectives, resulting in a cleaner and more maintainable structure.
@@ -114,9 +114,9 @@ if (ImGui::Button("Add Objective"))
 ```
 
 ### Saving the quest system:
-![alt text](../assets/questsystem/final.gif)
-![alt text](../assets/questsystem/savingfinal.png)
+![alt text](/assets/questsystem/final.gif)
+![alt text](/assets/questsystem/savingfinal.png)
 
 ### Loading the quest system:
-![alt text](../assets/questsystem/loadfinal.gif)
-![alt text](../assets/questsystem/ya_questname.json.png)
+![alt text](/assets/questsystem/loadfinal.gif)
+![alt text](/assets/questsystem/ya_questname.json.png)
