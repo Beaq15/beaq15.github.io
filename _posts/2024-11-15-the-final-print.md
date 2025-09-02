@@ -25,7 +25,7 @@ I took the lead in developing several key puzzles to enrich the gameplay.
 lock-picking puzzle that features a pin which jiggles if not correctly placed
 
  <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/lockpickjiggle.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/lockpickjiggle.mp4" type="video/mp4">
 </video>
 
 #### Numerical lock pick
@@ -33,7 +33,7 @@ lock-picking puzzle that features a pin which jiggles if not correctly placed
 The numerical lock pick consists of 4 numbers that are rotated and that represent a code. The part of the lock pick currently being rotated is highlighted, giving the player a visual representation of what he's doing. 
 
  <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/numberlock.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/numberlock.mp4" type="video/mp4" alt="Camera">
 </video>
 
 ### Controller support
@@ -47,13 +47,13 @@ Controller support for main menu:
 Controller support for the publish board:
 
 <video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/ControllerSupportPublishBoard.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/ControllerSupportPublishBoard.mp4" type="video/mp4" alt="Camera">
 </video>
 
 Controller support for journal and fast travel menus:
 
 <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/ControllerSupportJournal.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/ControllerSupportJournal.mp4" type="video/mp4" alt="Camera">
 </video>
 
 ### Graphics settings
@@ -67,7 +67,7 @@ Within the settings menu, players can:
 All settings are applied and saved after clicking the Apply button.
 
  <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/GraphicsSettings.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/GraphicsSettings.mp4" type="video/mp4" alt="Camera">
 </video>
 
 ### Bar level
@@ -80,7 +80,7 @@ In the Bar level:
 - during interaction, the player cannot move, rotate the camera, or take pictures.
 
  <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/BarLevel.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/BarLevel.mp4" type="video/mp4" alt="Camera">
 </video>
 
 ### Evidence interaction
@@ -91,7 +91,7 @@ Beneath the evidence photo in the journal, the item name confirms that the objec
 - place it back down with E
 
  <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/Evidence.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/Evidence.mp4" type="video/mp4" alt="Camera">
 </video>
 
 ### In-game animations
@@ -101,7 +101,7 @@ I implemented idle animations in both the bar and alley levels, ensuring they us
 Due to the animations being exported as Alembic files, I couldn’t use animation blueprints for smooth blending, which results in a slight snap when switching between states.
 
 <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/Animations.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/Animations.mp4" type="video/mp4" alt="Camera">
 </video>
 
 Typically, animations are implemented in the engine using animation blueprints, blending between states for smooth transitions. That was my initial approach as well. However, I quickly ran into an issue—Unreal was generating a new skeleton for each animation. Some NPCs have two distinct animations for conversations (e.g., an idle and an annoyed or shrug animation), and using them within the same blueprint requires a shared skeleton. Unfortunately, replacing the skeleton on an animation caused visual glitches, and retargeting wasn’t possible because the animations were exported using Alembic files with curves instead of bones. This was due to the animators working with MetaHumans and lacking the presence of a rigger in the team.
@@ -117,10 +117,10 @@ Before I took over this task, the mini-game had a basic, partially working versi
 Next, I implemented a timeline-based camera movement using a spline component attached to the player, creating a smooth, cinematic transition. I also designed a UI widget featuring a fade animation to enhance the overall presentation and flow of the mini-game.
 
 <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/Newspaper.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/Newspaper.mp4" type="video/mp4" alt="Camera">
 </video>
 <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/NewspaperPerformance.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/NewspaperPerformance.mp4" type="video/mp4" alt="Camera">
 </video>
 
 ### Wesley's call
@@ -128,19 +128,19 @@ Next, I implemented a timeline-based camera movement using a spline component at
 During the dialogue in the bar, Wesley, the bar owner, receives a phone call and is made unavailable to the player for a short period of time. In Wesley's dialogue data table, there are two dialogue events being triggered—one starts the phone ringing sound, and the other stops it. After the dialogue ends, Curtis is removed from the level entirely. He reappears when the player re-enters the level.
 
 <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/WesleyCall.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/WesleyCall.mp4" type="video/mp4" alt="Camera">
 </video>
 
 ### Dialogue lines
 
 <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/Dialogue1.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/Dialogue1.mp4" type="video/mp4" alt="Camera">
 </video>
 
 Dialogue options such as "Present Pictures," "Ask Questions," "Leave," and "Back" stay the same color and don't turn gray like the other buttons when clicked upon. This is a small change that improves the overall UX during conversations.
 
 <video width="320" height="240" controls>
-  <source src="../assets/thefinalprint/Dialogue2.mp4" type="video/mp4">
+  <source src="/assets/thefinalprint/Dialogue2.mp4" type="video/mp4" alt="Camera">
 </video>
 
 The dialogue line "Has Sharon been here?" turns white again after interacting with the publishboard, signaling that it may be worth revisiting. While in the publishboard, a small note appears hinting that the player doesn't have enough evidence—implying they’ve missed a crucial testimony. This system gently nudges the player to re-explore past conversations and highlights the dialogue choices that are essential for completing the game.
@@ -152,3 +152,9 @@ In total, there are four key testimonies that serve as evidence:
 - Wesley – asking if he smoked with Alonzo
 
 Each of these lines is highlighted again if the player misses them, helping guide them without ruining the flow of the game.
+
+### Evidence highlight
+
+<video width="320" height="240" controls>
+  <source src="/assets/thefinalprint/EvidenceHighlight.mp4" type="video/mp4" alt="Camera">
+</video>
