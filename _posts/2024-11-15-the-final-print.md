@@ -158,3 +158,13 @@ Each of these lines is highlighted again if the player misses them, helping guid
 <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/EvidenceHighlight.mp4" type="video/mp4" alt="Camera">
 </video>
+
+![](/assets/thefinalprint/thefinalprint7.jpg)
+![](/assets/thefinalprint/thefinalprint6.jpg)
+![](/assets/thefinalprint/thefinalprint1.jpg)
+![](/assets/thefinalprint/thefinalprint2.jpg)
+![](/assets/thefinalprint/thefinalprint3.jpg)
+![](/assets/thefinalprint/thefinalprint4.jpg)
+![](/assets/thefinalprint/thefinalprint5.jpg)
+
+
