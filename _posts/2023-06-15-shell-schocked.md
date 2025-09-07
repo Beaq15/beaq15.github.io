@@ -6,7 +6,7 @@ image:
 description: Football with crabs on the beach
 ---
 
-## General information
+## 💎 General information
 
 Shell Shocked is a 2v2 couch coop game where you play as a mechanized hermit crab trying to get a mine into the opposing team's goal. Stun crabs, shoot shells, and hit the ball to try and get the highest score for your team and win in the chaos!
 
@@ -16,7 +16,7 @@ The game was developed as an 8-week group project during my first year at univer
 
 ![](../assets/shellshocked/shellshocked1.png)
 
-## My contributions
+## 💫 My contributions
 
 My primary contribution was researching water shaders using the UE5 water plugin. Although I gained valuable insights through experimentation, various constraints prevented us from implementing the shader in the final game.
 

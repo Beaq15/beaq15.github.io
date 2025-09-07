@@ -6,7 +6,7 @@ image:
 description: Ai agents that follow the player on a set navigation mesh
 ---
 
-## General information
+## 💎 General information
 
 This was the first project I worked on in my second year of university. It was built using a provided template, without relying on any external engines. The agents navigate a mesh to move toward the player’s position. The code can be run in three different modes: with gravity applied to the agents, with the ability for the player to push them around, or with standard pathfinding behavior.
 
@@ -155,7 +155,7 @@ const geometry2d::PolygonList NavigationMesh::MakePathsDIntoPolygons(PathsD path
 
 I am also making all the obstacles in the game class by creating a polygonCollider component. In the physics system, I just go through all the bodies, and then the polygons and just resolve the collision.
 
-My code can do three things in total:
+⭐ My code can do three things in total:
 
 -apply gravity to the agents  
 <img src="../assets/ai&physics/gravity.gif" alt="Agents moving with gravity applied">  

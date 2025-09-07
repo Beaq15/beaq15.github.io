@@ -6,17 +6,17 @@ image:
 description: Quest system for a rts game / Custom engine
 ---
 
-## Gameplay
+## ⭐ Gameplay
 
 <video width="320" height="240" controls>
   <source src="/assets/questsystem/questchain.mp4" type="video/mp4" alt="Quest system">
 </video>
 
-## General information
+## 💎 General information
 
 As part of a group project with seven programmers, I developed a quest system for our RTS game. Since we were building a custom engine alongside the game, I designed my system with serialization in mind.
 
-Initially, the system worked by displaying the next stage of a quest once all objectives in the current stage were completed. When every stage in a quest was finished, the quest would disappear after a two-second delay, and the following quest would appear. The system was first implemented using ImGui, and later I contributed to integrating it into the game’s UI.
+The system works by displaying the next stage of a quest once all objectives in the current stage were completed. When every stage in a quest was finished, the quest would disappear after a two-second delay, and the following quest would appear. The system was first implemented using ImGui, and later I contributed to integrating it into the game’s UI.
 
 -quest system
 <img src = "/assets/questsystem/questevidence.gif" alt="Quest evidence"></img>
@@ -55,7 +55,7 @@ auto& stage1q1 = CreateStage(quest1, "Construct Buildings");
   quest1.StartQuest();
  ```
 
- ## Serialization
+ ## 💫 Serialization
 
  While running the game in engine, a game designer can easily create as many quests as they need with the press of a button. The objectives have multiple properties that can be modified beside the name, such as the type, quantity, handle and team.
 
@@ -113,10 +113,10 @@ if (ImGui::Button("Add Objective"))
 
 ```
 
-### Saving the quest system:
+### 💫 Saving the quest system:
 ![alt text](/assets/questsystem/final.gif)
 ![alt text](/assets/questsystem/savingfinal.png)
 
-### Loading the quest system:
+### 💫 Loading the quest system:
 ![alt text](/assets/questsystem/loadfinal.gif)
 ![alt text](/assets/questsystem/ya_questname.json.png)
