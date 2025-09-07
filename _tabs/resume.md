@@ -2,7 +2,7 @@
 title: "Resume"
 layout: default
 icon: fa-solid fa-file
-order: 5
+order: 2
 ---
 
 > Press [this link](/assets/Beatrice_Marcu.pdf "Download") to download the resume!
