@@ -6,29 +6,29 @@ image:
 description: 3D detective game made in UE5
 ---
 
-## Gameplay
+## ⭐ Gameplay
 {% include embed/youtube.html id='1zgv7JVbAiA' %}
 
-## General information
+## 💎 General information
 The Final Print is a group project I worked on with +-18 other students over the course of 24 weeks.
 You're a journalist investigating a suspicious case during the Harlem riots. Take pictures of evidence, gather information by interrogating people, and put it all together in an article to show people the truth.
 
 > More information on the [Steam page](https://store.steampowered.com/app/3365840/The_Final_Print/?curator_clanid=45433508).
 
-## My contribution
+## 💫 My contribution
 
-### Puzzle development
+### ⚪ Puzzle development
 I took the lead in developing several key puzzles to enrich the gameplay.
 
-#### Lock pick
+#### ⚪ Lock pick
 
-lock-picking puzzle that features a pin which jiggles if not correctly placed
+Lock-picking puzzle that features a pin which jiggles if not correctly placed:
 
  <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/lockpickjiggle.mp4" type="video/mp4">
 </video>
 
-#### Numerical lock pick
+#### ⚪ Numerical lock pick
 
 The numerical lock pick consists of 4 numbers that are rotated and that represent a code. The part of the lock pick currently being rotated is highlighted, giving the player a visual representation of what he's doing. 
 
@@ -36,7 +36,7 @@ The numerical lock pick consists of 4 numbers that are rotated and that represen
   <source src="/assets/thefinalprint/numberlock.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### Controller support
+### ⚪ Controller support
 
 To ensure a versatile gaming experience, I implemented controller support for the user interface, allowing seamless navigation through the game using either a keyboard or a controller. This support extends from basic menu interactions to more complex interfaces such as the publish board, pin board, journal, and fast travel menus.
 
@@ -56,7 +56,7 @@ Controller support for journal and fast travel menus:
   <source src="/assets/thefinalprint/ControllerSupportJournal.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### Graphics settings
+### ⚪ Graphics settings
 
 Within the settings menu, players can:
 
@@ -70,7 +70,7 @@ All settings are applied and saved after clicking the Apply button.
   <source src="/assets/thefinalprint/GraphicsSettings.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### Bar level
+### ⚪ Bar level
 
 In the Bar level:
 
@@ -83,7 +83,7 @@ In the Bar level:
   <source src="/assets/thefinalprint/BarLevel.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### Evidence interaction
+### ⚪ Evidence interaction
 
 Beneath the evidence photo in the journal, the item name confirms that the object has been recognized by the camera. Players can:
 - pick up evidence by pressing E
@@ -94,7 +94,7 @@ Beneath the evidence photo in the journal, the item name confirms that the objec
   <source src="/assets/thefinalprint/Evidence.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### In-game animations
+### ⚪ In-game animations
 
 I implemented idle animations in both the bar and alley levels, ensuring they use the correct meshes and materials provided by the va's. For characters like Lindy and Curtis, I set up a system to switch between idle and annoyed animations based on specific dialogue lines.
 
@@ -110,7 +110,7 @@ To fully understand the situation, I had multiple discussions with the animators
 
 In the end, we settled on a workaround: switching both the animation asset and the skeletal mesh asset mid-dialogue. While this causes a small visual snap, it’s subtle enough that most players won’t notice it unless they’re actively looking for it.
 
-### Newspaper Throw Mini Game
+### ⚪ Newspaper Throw Mini Game
 
 Before I took over this task, the mini-game had a basic, partially working version developed by a designer—but it was causing major performance issues. My first step was to make the projectile visible before the newspaper is thrown and recalculating the trajectory in a more efficient way that wouldn't impact performance when adding a mesh.
 
@@ -123,7 +123,7 @@ Next, I implemented a timeline-based camera movement using a spline component at
   <source src="/assets/thefinalprint/NewspaperPerformance.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### Wesley's call
+### ⚪ Wesley's call
 
 During the dialogue in the bar, Wesley, the bar owner, receives a phone call and is made unavailable to the player for a short period of time. In Wesley's dialogue data table, there are two dialogue events being triggered—one starts the phone ringing sound, and the other stops it. After the dialogue ends, Curtis is removed from the level entirely. He reappears when the player re-enters the level.
 
@@ -131,7 +131,7 @@ During the dialogue in the bar, Wesley, the bar owner, receives a phone call and
   <source src="/assets/thefinalprint/WesleyCall.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### Dialogue lines
+### ⚪ Dialogue lines
 
 <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/Dialogue1.mp4" type="video/mp4" alt="Camera">
@@ -153,7 +153,7 @@ In total, there are four key testimonies that serve as evidence:
 
 Each of these lines is highlighted again if the player misses them, helping guide them without ruining the flow of the game.
 
-### Evidence highlight
+### ⚪ Evidence highlight
 
 <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/EvidenceHighlight.mp4" type="video/mp4" alt="Camera">
