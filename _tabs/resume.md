@@ -2,7 +2,12 @@
 title: "Resume"
 layout: default
 icon: fa-solid fa-file
-order: 5
+order: 2
 ---
 
-<iframe src="assets/Beatrice Marcu.pdf" width="100%" height="600px" style="border:none;"></iframe>
+> Press [this link](/assets/Beatrice_Marcu.pdf "Download") to download the resume!
+{: .prompt-tip}
+
+![PDF as jpg](/assets/cv1.png)
+![PDF as jpg](/assets/cv2.png)
+![PDF as jpg](/assets/cv3.png)
