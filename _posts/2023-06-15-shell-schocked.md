@@ -3,7 +3,7 @@ title: "Shell Shocked"
 categories: [Projects]
 image: 
   path: /assets/shellshocked/shellshocked.png
-description: Football with crabs on the beach
+description: 3D team game in Unreal Engine 5 as first year students
 ---
 
 ## 💎 General information
