@@ -3,7 +3,7 @@ title: "AI&Physics"
 categories: [Projects]
 image: 
   path: /assets/ai&physics/picture.png
-description: Ai agents that follow the player on a set navigation mesh
+description: 2D feature developed without a custom engine
 ---
 
 ## 💎 General information
