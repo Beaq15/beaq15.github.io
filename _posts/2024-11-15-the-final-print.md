@@ -3,7 +3,7 @@ title: "The final print"
 categories: [Projects]
 image: 
   path: /assets/thefinalprint/thefinalprint.png
-description: 3D detective game made in UE5
+description: 3D team game developed in UE5 as third year students
 ---
 
 ## ⭐ Gameplay
