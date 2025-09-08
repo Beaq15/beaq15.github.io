@@ -3,7 +3,7 @@ title: "Quest system"
 categories: [Projects]
 image: 
   path: /assets/questsystem/picture.png
-description: Quest system for a rts game / Custom engine
+description: 2D feature created from scratch while developing a custom engine
 ---
 
 ## ⭐ Gameplay
