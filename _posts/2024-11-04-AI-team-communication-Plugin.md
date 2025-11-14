@@ -1,8 +1,6 @@
 ---
 title: "AI Team Communication Plugin for UE5"
 categories: [Projects]
-image: 
-  path:
 description: Fact-based AI communication system with realistic constraints
 ---
 
