@@ -25,7 +25,7 @@ AI_2 sees AI_1 and broadcasts to it. AI_3 is blocking that fact because it liste
 The variable for listening channels is an array `TArray<int32> ListeningChannels = { 0 };` which allows the AI to subscribe to multiple channels simultaneously. Facts are broadcasted to AIs listening on the same channel and blocked to others.
 
 ## Realistic communication latency system
-![alt text](../assets/media/delay.png)
+![alt text](../assets/AITeamCommunication/delay.png)
 Based on the yellow message, we can see that the facts for AI_6 and AI_7 are queued with some delay.
 
 ### 1. Before broadcasting, facts are added to queue `PendingDeliveries.Add(Delivery);`. 
@@ -94,12 +94,12 @@ return;
 The purple text shows max hops working.
 
 ## Area claims system for coordinated search
-[alt text](../assets/media/claimarea3.png) 
-![alt text](../assets/media/claimarea1.png) 
-![alt text](../assets/media/claimarea2.png) 
+[alt text](../assets/AITeamCommunication/claimarea3.png) 
+![alt text](../assets/AITeamCommunication/claimarea1.png) 
+![alt text](../assets/AITeamCommunication/claimarea2.png) 
 
 The AI claim areas without overlapping.
 
 <video width="320" height="240" controls>
-  <source src="../assets/media/claimarea.mp4" type="video/mp4">
+  <source src="../assets/AITeamCommunication/claimarea.mp4" type="video/mp4">
 </video>
