@@ -9,6 +9,7 @@ description: Fact-based AI communication system with realistic constraints
 ## 💎 General information
 
 AI Team Communication is a plugin I built from scratch in Unreal Engine 5 using C++. It enables AI agents to share tactical information with each other through a fact-based communication system. When an AI sees or hears the player, it broadcasts this information as a "fact" to nearby teammates.
+
 Each fact has a confidence value that represents how reliable or current that information is. When an AI first observes something directly (like spotting the player), the fact starts with high confidence. As time passes without confirmation, this confidence gradually decays toward zero, simulating how information becomes stale and less trustworthy. This means AI agents will prioritize fresh intelligence from teammates who recently saw the player over older reports, creating more realistic and dynamic tactical behavior.
 
 ## AI hearing detection for player movement using listening channels
