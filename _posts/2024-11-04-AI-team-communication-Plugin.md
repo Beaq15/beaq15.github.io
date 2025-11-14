@@ -92,11 +92,13 @@ return;
 ```
 
 ![alt text](../assets/AITeamCommunication/maxhop.webp) 
+
 The purple text shows max hops working.
 
 ## Area claims system for coordinated search
+
 [alt text](../assets/AITeamCommunication/claimarea3.png) 
-![alt text](../assets/AITeamCommunication/claimarea1.png) 
+![alt text](../assets/AITeamCommunication/claimarea1.png)
 ![alt text](../assets/AITeamCommunication/claimarea2.png) 
 
 The AI claim areas without overlapping.
