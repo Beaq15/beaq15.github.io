@@ -21,7 +21,7 @@ Shell Shocked is a chaotic 2v2 couch co-op game where players control mechanized
 
 **Team Size:** 14 people (8-week project)
 
-**Key Features:**
+### Key Features:
 
 - 2v2 local multiplayer gameplay
 - Physics-based ball mechanics with shooting and stunning

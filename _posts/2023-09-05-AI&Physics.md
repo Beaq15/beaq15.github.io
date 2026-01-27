@@ -26,7 +26,7 @@ AI&Physics is a 2D simulation system that combines A* pathfinding with custom ph
 
 **Tech Stack:** C++, CDT (Constrained Delaunay Triangulation), Clipper2 library, custom template
 
-**Key Features:**
+### Key Features:
 
 - A* pathfinding with priority queue optimization
 - Custom physics engine with rigid body dynamics

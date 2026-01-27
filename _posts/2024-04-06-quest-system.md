@@ -22,7 +22,7 @@ The quest system manages hierarchical quest chains with multiple stages and obje
 
 **Team Size:** 7 programmers
 
-**Key Features:**
+### Key Features:
 
 - Hierarchical quest structure (Quests → Stages → Objectives)
 - Multiple objective types (Kill, Build, Collect, TrainUnits, Location)
