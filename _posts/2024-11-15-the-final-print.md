@@ -2,162 +2,208 @@
 title: "The final print"
 categories: [Projects]
 image: 
-  path: /assets/thefinalprint/thefinalprint.png
-description: 3D team game developed in UE5 as third year students
+  path: /assets/thefinalprint/thefinalprint.jpg
+description: 🏆 Winner of Best Student Game at Dutch Game Awards 2025 - 3D narrative investigation game developed in UE5
 ---
 
-## ⭐ Gameplay
+## 🏆 Award-Winning Project
+## 🎉 Winner of Best Student Game 2025 at the Dutch Game Awards!
+The Final Print won the prestigious Best Student Game award at the Dutch Game Awards 2025, competing against top student projects from across the Netherlands.
+
+**Jury feedback:** "A beautifully crafted and deep game experience! The team made bold choices for their storyline to create an intriguing and unique narrative experience. The game could benefit from a hint-mechanism and some polish to squash the last bugs, but the judges are fully confident this team can deliver a quality experience."
+
+## 🎓 Development Notes
+The Final Print is a narrative investigation game developed over 24 weeks with approximately 18 students as a third-year university project. This project provided extensive experience with complex game systems, UI/UX design, puzzle implementation, and cross-functional collaboration. My contributions spanned gameplay programming, puzzle design, controller support, performance optimization, and technical problem-solving around animation pipeline constraints. The game was successfully published on Steam, demonstrating our team's ability to deliver a polished, commercially viable product.
+
 {% include embed/youtube.html id='1zgv7JVbAiA' %}
 
-## 💎 General information
-The Final Print is a group project I worked on with +-18 other students over the course of 24 weeks.
+## 🎮 Project Overview
 You're a journalist investigating a suspicious case during the Harlem riots. Take pictures of evidence, gather information by interrogating people, and put it all together in an article to show people the truth.
 
 > More information on the [Steam page](https://store.steampowered.com/app/3365840/The_Final_Print/?curator_clanid=45433508).
 
-## 💫 My contribution
+**Tech Stack:** Unreal Engine 5, Blueprints, C++
 
-### ⚪ Puzzle development
-I took the lead in developing several key puzzles to enrich the gameplay.
+**Team Size:** ~18 students (24-week project)
 
-#### ⚪ Lock pick
+**Platform:** PC (Steam)
 
-Lock-picking puzzle that features a pin which jiggles if not correctly placed:
+### Key Features:
 
- <video width="320" height="240" controls>
+- Investigation-based narrative gameplay
+- Photography evidence system
+- NPC interrogation and dialogue trees
+- Multiple puzzle types (lock-picking, code-breaking)
+- Full controller and keyboard/mouse support
+- Dynamic dialogue system with visual feedback
+- Cinematic camera sequences
+
+## 💫 Puzzle Development
+I took the lead in developing several key puzzles to enrich the gameplay experience.
+### Lock Pick Puzzle
+Developed a lock-picking puzzle featuring a pin that jiggles when not correctly placed, providing tactile feedback to guide the player toward the solution.
+<video width="320" height="240" controls>
   <source src="/assets/thefinalprint/lockpickjiggle.mp4" type="video/mp4">
 </video>
 
-#### ⚪ Numerical lock pick
-
-The numerical lock pick consists of 4 numbers that are rotated and that represent a code. The part of the lock pick currently being rotated is highlighted, giving the player a visual representation of what he's doing. 
+### Numerical Lock Pick
+Created a numerical lock puzzle consisting of 4 rotatable numbers that represent a code. The section currently being rotated is highlighted, giving players clear visual feedback about their actions and making the puzzle intuitive to solve.
 
  <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/numberlock.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### ⚪ Controller support
+## 🔧 Core Systems Implementation
 
-To ensure a versatile gaming experience, I implemented controller support for the user interface, allowing seamless navigation through the game using either a keyboard or a controller. This support extends from basic menu interactions to more complex interfaces such as the publish board, pin board, journal, and fast travel menus.
+### Controller Support
+To ensure a versatile gaming experience, I implemented comprehensive controller support for the user interface, allowing seamless navigation using either keyboard/mouse or controller. This support extends from basic menu interactions to complex interfaces including the publish board, pin board, journal, and fast travel menus.
 
-Controller support for main menu:
+### Main Menu Controller Support:
 
 ![menu controller support](/assets/thefinalprint/controllersupport.gif)
 
-Controller support for the publish board:
-
+### Publish Board Controller Support:
 <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/ControllerSupportPublishBoard.mp4" type="video/mp4" alt="Camera">
 </video>
 
-Controller support for journal and fast travel menus:
-
+### Journal and Fast Travel Controller Support:
 <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/ControllerSupportJournal.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### ⚪ Graphics settings
+### Graphics Settings Menu
+Implemented a comprehensive graphics settings menu allowing players to:
 
-Within the settings menu, players can:
+- Change window mode (Fullscreen, Windowed, Windowed Fullscreen)
+- Adjust resolution and resolution scale
+- Set overall graphics quality (Low to Max)
 
-- change window mode (Fullscreen, Windowed, Windowed Fullscreen)
-- adjust resolution and resolution scale
-- set overall graphics quality (Low to Max)
-
-All settings are applied and saved after clicking the Apply button.
+All settings are applied and saved after clicking the Apply button, with proper state persistence between sessions.
 
  <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/GraphicsSettings.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### ⚪ Bar level
+## 🎭 Gameplay Features
+### Bar Level Interactions
+Developed the NPC interaction system for the Bar level with the following features:
 
-In the Bar level:
-
-- NPCs are highlighted when hovered over with the mouse.
-- clicking a highlighted NPC starts a conversation.
-- after closing the conversation, the NPC returns to their original position.
-- during interaction, the player cannot move, rotate the camera, or take pictures.
+- NPCs are highlighted when hovered over with the mouse
+- Clicking a highlighted NPC initiates conversation
+- After closing conversation, NPCs return to their original positions
+- During interaction, player movement, camera rotation, and photography are disabled to maintain immersion
 
  <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/BarLevel.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### ⚪ Evidence interaction
+### Evidence Interaction System
+Created an intuitive evidence examination system where:
 
-Beneath the evidence photo in the journal, the item name confirms that the object has been recognized by the camera. Players can:
-- pick up evidence by pressing E
-- rotate it using the mouse
-- place it back down with E
+- Evidence photos in the journal display the item name confirming recognition
+- Players can pick up evidence by pressing E
+- Evidence can be rotated using the mouse for detailed inspection
+- Items can be placed back down with E
 
  <video width="320" height="240" controls>
   <source src="/assets/thefinalprint/Evidence.mp4" type="video/mp4" alt="Camera">
 </video>
 
-### ⚪ In-game animations
-
-I implemented idle animations in both the bar and alley levels, ensuring they use the correct meshes and materials provided by the va's. For characters like Lindy and Curtis, I set up a system to switch between idle and annoyed animations based on specific dialogue lines.
-
-Due to the animations being exported as Alembic files, I couldn’t use animation blueprints for smooth blending, which results in a slight snap when switching between states.
+### Evidence Highlight System
+Implemented a visual highlighting system to guide players toward important evidence without breaking immersion.
 
 <video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/Animations.mp4" type="video/mp4" alt="Camera">
+  <source src="/assets/thefinalprint/EvidenceHighlight.mp4" type="video/mp4" alt="Camera">
 </video>
 
-Typically, animations are implemented in the engine using animation blueprints, blending between states for smooth transitions. That was my initial approach as well. However, I quickly ran into an issue—Unreal was generating a new skeleton for each animation. Some NPCs have two distinct animations for conversations (e.g., an idle and an annoyed or shrug animation), and using them within the same blueprint requires a shared skeleton. Unfortunately, replacing the skeleton on an animation caused visual glitches, and retargeting wasn’t possible because the animations were exported using Alembic files with curves instead of bones. This was due to the animators working with MetaHumans and lacking the presence of a rigger in the team.
+## ⚙️ Technical Challenges & Solutions
 
-To fully understand the situation, I had multiple discussions with the animators and the tech artist assisting them. We eventually had a joint meeting with our animation instructor and another teacher to confirm whether there was any alternative approach that would still meet our needs. One option was to wait for an animation to finish and then switch to the next one, since both started and ended in the same pose—but this risked breaking the timing with the voice acting.
-
-In the end, we settled on a workaround: switching both the animation asset and the skeletal mesh asset mid-dialogue. While this causes a small visual snap, it’s subtle enough that most players won’t notice it unless they’re actively looking for it.
-
-### ⚪ Newspaper Throw Mini Game
-
-Before I took over this task, the mini-game had a basic, partially working version developed by a designer—but it was causing major performance issues. My first step was to make the projectile visible before the newspaper is thrown and recalculating the trajectory in a more efficient way that wouldn't impact performance when adding a mesh.
-
-Next, I implemented a timeline-based camera movement using a spline component attached to the player, creating a smooth, cinematic transition. I also designed a UI widget featuring a fade animation to enhance the overall presentation and flow of the mini-game.
+### In-Game Animation System
+Implemented idle animations in both bar and alley levels, ensuring correct meshes and materials from visual artists were used. For characters like Lindy and Curtis, I created a system to switch between idle and annoyed animations based on specific dialogue lines.
 
 <video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/Newspaper.mp4" type="video/mp4" alt="Camera">
+  <source src="/assets/thefinalprint/Animations.mp4" type="video/mp4">
 </video>
+
+### Technical Challenge:
+Typically, animations are implemented using animation blueprints with smooth state blending. However, I encountered a critical issue—Unreal was generating separate skeletons for each animation. Since some NPCs required multiple animations (idle and annoyed states) within the same blueprint, they needed a shared skeleton. Replacing skeletons caused visual glitches, and retargeting wasn't possible because animations were exported as Alembic files with curves instead of bones. This limitation stemmed from animators working with MetaHumans without a rigger on the team.
+
+### Solution Process:
+I held multiple discussions with animators and the tech artist, eventually organizing a joint meeting with our animation instructor and another teacher to explore alternatives. We considered waiting for animations to complete before switching (since both shared the same start/end pose), but this risked breaking voice acting synchronization.
+The final solution involved switching both the animation asset and skeletal mesh asset mid-dialogue. While this causes a small visual snap, it's subtle enough that most players won't notice unless actively looking for it—an acceptable compromise given the technical constraints.
+
+### Newspaper Throw Mini-Game Optimization
+
+Inherited a basic mini-game implementation from a designer that was causing major performance issues. I completely refactored the system:
+
+### Performance Improvements:
+
+- Made the projectile visible before throwing
+- Recalculated trajectory using a more efficient algorithm that didn't impact performance when adding mesh rendering
+
+### Polish & Presentation:
+
+- Implemented timeline-based camera movement using a spline component for smooth, cinematic transitions
+- Designed UI widget with fade animations to enhance flow
+
 <video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/NewspaperPerformance.mp4" type="video/mp4" alt="Camera">
+  <source src="/assets/thefinalprint/Newspaper.mp4" type="video/mp4">
 </video>
 
-### ⚪ Wesley's call
-
-During the dialogue in the bar, Wesley, the bar owner, receives a phone call and is made unavailable to the player for a short period of time. In Wesley's dialogue data table, there are two dialogue events being triggered—one starts the phone ringing sound, and the other stops it. After the dialogue ends, Curtis is removed from the level entirely. He reappears when the player re-enters the level.
+### Performance Demonstration:
 
 <video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/WesleyCall.mp4" type="video/mp4" alt="Camera">
+  <source src="/assets/thefinalprint/NewspaperPerformance.mp4" type="video/mp4">
 </video>
 
-### ⚪ Dialogue lines
+## 🎬 Narrative Systems
+
+### Wesley's Phone Call Event
+
+Created a dynamic narrative event where Wesley, the bar owner, receives a phone call during dialogue, making him temporarily unavailable.
+
+### Implementation:
+
+- Wesley's dialogue data table triggers two events: one starts the phone ringing sound, the other stops it
+- After dialogue concludes, Curtis is removed from the level
+- Curtis reappears when the player re-enters the level
 
 <video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/Dialogue1.mp4" type="video/mp4" alt="Camera">
+  <source src="/assets/thefinalprint/WesleyCall.mp4" type="video/mp4">
 </video>
 
-Dialogue options such as "Present Pictures," "Ask Questions," "Leave," and "Back" stay the same color and don't turn gray like the other buttons when clicked upon. This is a small change that improves the overall UX during conversations.
+### Dialogue System UX Improvements
+
+Implemented several UX enhancements to the dialogue system:
+
+### Visual Feedback for Navigation Options:
 
 <video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/Dialogue2.mp4" type="video/mp4" alt="Camera">
+  <source src="/assets/thefinalprint/Dialogue1.mp4" type="video/mp4">
 </video>
 
-The dialogue line "Has Sharon been here?" turns white again after interacting with the publishboard, signaling that it may be worth revisiting. While in the publishboard, a small note appears hinting that the player doesn't have enough evidence—implying they’ve missed a crucial testimony. This system gently nudges the player to re-explore past conversations and highlights the dialogue choices that are essential for completing the game.
+Dialogue options such as "Present Pictures," "Ask Questions," "Leave," and "Back" maintain their color and don't turn gray when clicked, unlike other dialogue choices. This subtle change improves UX by clearly distinguishing navigation options from content choices.
 
-In total, there are four key testimonies that serve as evidence:
+### Dynamic Dialogue Re-Highlighting:
+
+<video width="320" height="240" controls>
+  <source src="/assets/thefinalprint/Dialogue2.mp4" type="video/mp4">
+</video>
+
+The dialogue line "Has Sharon been here?" turns white again after interacting with the publish board, signaling it may be worth revisiting. In the publish board, a note appears hinting that the player lacks sufficient evidence—implying they've missed a crucial testimony. This system gently guides players to re-explore past conversations without explicit hand-holding.
+
+### Key Testimony System:
+Four essential testimonies serve as evidence:
+
 - Alonzo – asking about the note
 - Curtis – asking if Sharon has been there before
 - Lindy – asking about the receipt
 - Wesley – asking if he smoked with Alonzo
 
-Each of these lines is highlighted again if the player misses them, helping guide them without ruining the flow of the game.
+Each dialogue line is re-highlighted if missed, helping guide players toward completion without disrupting game flow.
 
-### ⚪ Evidence highlight
-
-<video width="320" height="240" controls>
-  <source src="/assets/thefinalprint/EvidenceHighlight.mp4" type="video/mp4" alt="Camera">
-</video>
+## 📸 Gallery
 
 ![](/assets/thefinalprint/thefinalprint7.jpg)
 ![](/assets/thefinalprint/thefinalprint6.jpg)
