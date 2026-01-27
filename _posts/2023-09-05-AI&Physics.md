@@ -3,14 +3,41 @@ title: "AI&Physics"
 categories: [Projects]
 image: 
   path: /assets/ai&physics/picture.png
-description: 2D feature developed without a custom engine
+description: Custom 2D AI pathfinding and physics system built without an engine
 ---
 
-## 💎 General information
+## 🎓 Development Notes
+This was the first project I worked on in my second year of university, built using a provided template without relying on any external engines. The project demonstrates the integration of AI pathfinding with physics simulation, allowing agents to navigate a mesh toward the player's position while responding to gravity and collision forces. The code can be run in three different modes: with gravity applied to the agents, with the ability for the player to push them around, or with standard pathfinding behavior.
 
-This was the first project I worked on in my second year of university. It was built using a provided template, without relying on any external engines. The agents navigate a mesh to move toward the player’s position. The code can be run in three different modes: with gravity applied to the agents, with the ability for the player to push them around, or with standard pathfinding behavior.
+- apply gravity to the agents 
 
-In the graph class, when implementing the A* search algorithm I used a priority queue for finding the shortest path between two vertices. It efficiently explores nodes based on their estimated total cost, so that the ones with the lowest estimated total cost are explored first. This is crucial for the algorithm so that the most promising path is found. It also helps with a faster search in such a way that the A* prioritizes exploring nodes that are likely to lead to the shortest path. 
+<img src="../assets/ai&physics/gravity.gif" alt="Agents moving with gravity applied">  
+
+- push the agents around  
+
+<img src="../assets/ai&physics/pushing.gif" alt="Player pushing agents around">  
+
+- classic path following  
+
+<img src="../assets/ai&physics/normalbehaviour.gif" alt="Agents following classic pathfinding behaviour">  
+
+## 🎮 Project Overview
+AI&Physics is a 2D simulation system that combines A* pathfinding with custom physics integration. Agents navigate through a procedurally loaded navigation mesh while responding to physics forces, demonstrating the interplay between AI navigation and rigid body dynamics.
+
+**Tech Stack:** C++, CDT (Constrained Delaunay Triangulation), Clipper2 library, custom template
+
+**Key Features:**
+
+- A* pathfinding with priority queue optimization
+- Custom physics engine with rigid body dynamics
+- Collision detection and resolution (disk-to-disk and disk-to-polygon)
+- Navigation mesh generation from file input
+- Three gameplay modes: gravity, pushing, and pathfinding
+- ECS (Entity Component System) architecture
+
+## 🔧 Technical Implementation
+### A* Pathfinding with Priority Queue
+I implemented the A* search algorithm using a priority queue to find the shortest path between two vertices. The algorithm efficiently explores nodes based on their estimated total cost, prioritizing nodes with the lowest estimated total cost first. This ensures the most promising path is explored and significantly speeds up the search process.
 
 ```cpp
 std::priority_queue<PathNode> open_set;
@@ -25,7 +52,11 @@ while (!open_set.empty())
 ```
 ![](../assets/ai&physics/week2.png)
 
-For the file reader I used tokenization by creating a vector of strings in which I added each item from the file, separated by space.  I then checked if the first token was w or o and went through all the lines, starting with the second item and added into a pointD variable pairs of 2 numbers, which represent the x and y of the points. I also created a CleanupGeometry() function which uses the difference function from the clipper library between the walkableArea and the obstacles. For the Triangulation() function i just insert all the vertices and edges using the cdt library. I draw the obstacles by going through all the paths by using the finalPath variable that i created in the CleanupGeometry().
+## Navigation Mesh Generation
+The navigation mesh is loaded from a file using a custom parser with tokenization. I created a vector of strings containing each item from the file, separated by spaces. The parser checks if the first token is 'w' (walkable area) or 'o' (obstacle), then iterates through the line starting from the second item, adding pairs of numbers into a PointD variable representing x and y coordinates.
+
+I also created a CleanupGeometry() function that uses the difference function from the Clipper library to subtract obstacles from the walkable area. For triangulation, I used the CDT library to insert all vertices and edges. Obstacles are drawn by iterating through all paths using the finalPath variable created in CleanupGeometry().
+
 
 ```cpp
 NavigationMesh::NavigationMesh(const std::string& filename)
@@ -80,7 +111,9 @@ NavigationMesh::NavigationMesh(const std::string& filename)
 
 ![](../assets/ai&physics/week4.png)
 
-Creating the agents: 
+### Entity Creation with ECS
+Agents are created using an Entity Component System architecture, with components for Transform, NavMeshAgent, rendering, RigidBody, and collision:
+
 ```cpp
 for (auto agents : navigationSystem.GetNavigationMesh().GetAIPosition())
 {
@@ -100,7 +133,22 @@ for (auto agents : navigationSystem.GetNavigationMesh().GetAIPosition())
 }
 ```
 
-I created a physics system and a class for the rigid body that I added as a component to the agents and player. In the physics loop, I go through all the agents and add a total force, then update their position and velocity using the force and the inverse mass. I clear the forces and in the end update their translation. In order to make this work, I also changed the navigation system so that it sets the linear velocity of the rigid body. Apart from this, i added a disk collider class which only had a getter for the radius and created it as a component for both the player and the agents. I then create a function that checks whether two disks collide or not and just draw a circle around them.
+## ⚙️ Physics System Implementation
+
+### Custom Physics Engine
+I created a custom physics system with a RigidBody class added as a component to agents and the player. In the physics loop, the system:
+
+1. Iterates through all agents and accumulates total forces
+2. Updates position and velocity using force and inverse mass
+3. Clears forces
+4. Updates entity transforms
+
+The navigation system was modified to set the linear velocity of rigid bodies directly, allowing seamless integration between AI and physics.
+
+### Collision Detection & Resolution
+I implemented a DiskCollider class with radius getter methods and created collision detection for both disk-to-disk and disk-to-polygon scenarios.
+
+### Impulse-Based Collision Resolution:
 
 ```cpp
 void PhysicsSystem::ImpulseResolveCollision(RigidBody& a, RigidBody& b, const CollisionData& p)
@@ -124,8 +172,7 @@ void PhysicsSystem::ImpulseResolveCollision(RigidBody& a, RigidBody& b, const Co
 }
 ```
 
-The CollisionData struct only stores the normal and depth and I changed the disk to disk collision detection to return those 2 variables. In the function I also made sure to calculate them. In the physics loop, I checked if the two objects collide by checking the value of data:
-
+The CollisionData struct stores the collision normal and penetration depth. The modified disk-to-disk collision detection returns these variables, which are then used in the physics loop:
 ```cpp
 auto data = DiskDiskCollision(body1.position, body2.position, diskCollider1.GetRadius(), diskCollider2.GetRadius());
 if (data.depth > 0)
@@ -133,8 +180,8 @@ if (data.depth > 0)
     ImpulseResolveCollision(body1, body2, data);
 }
 ```
-
-For the polygons it is mostly the same process, but for that I had to also create a getter for the obstacles in the navigation mesh. Because the obstacles are of type pathsd, I created a function that makes pathsd into polygons.
+### Polygon Collision Handling
+For polygon collision detection, I created a conversion function that transforms PathsD types into geometry2d::Polygon types:
 
 ```cpp
 const geometry2d::PolygonList NavigationMesh::MakePathsDIntoPolygons(PathsD pathsd) const
@@ -153,15 +200,4 @@ const geometry2d::PolygonList NavigationMesh::MakePathsDIntoPolygons(PathsD path
 }
 ```
 
-I am also making all the obstacles in the game class by creating a polygonCollider component. In the physics system, I just go through all the bodies, and then the polygons and just resolve the collision.
-
-⭐ My code can do three things in total:
-
--apply gravity to the agents  
-<img src="../assets/ai&physics/gravity.gif" alt="Agents moving with gravity applied">  
-
--push the agents around  
-<img src="../assets/ai&physics/pushing.gif" alt="Player pushing agents around">  
-
--classic path following  
-<img src="../assets/ai&physics/normalbehaviour.gif" alt="Agents following classic pathfinding behaviour">  
+All obstacles are instantiated in the game class by creating a PolygonCollider component. In the physics system, the code iterates through all rigid bodies and polygons to resolve collisions appropriately.
