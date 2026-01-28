@@ -87,9 +87,11 @@ enum class EAIRole : uint8
     Support     UMETA(DisplayName = "Support - Selective relay")
 };
 ```
+
 2. **Rebroadcast Permission on Components**
 
 Each AI has a boolean attached that decides if they rebroadcast facts:
+
 ```cpp
 if (Receiver->bCanRebroadcast && Fact.CanRelay())
 {
@@ -99,6 +101,7 @@ Receiver->AddOrUpdateFact(Fact, bShouldRebroadcast);
 ```
 
 3. **Current Hops Incremented When Fact Copied for Receiver**
+
 ```cpp
  if (bListeningToChannel && bInRange)
  {
@@ -108,6 +111,7 @@ Receiver->AddOrUpdateFact(Fact, bShouldRebroadcast);
 ```
 
 4. **Early Exit When Hop Limit Reached**
+
 ```cpp
 if (!Fact.CanRelay())
 return;
