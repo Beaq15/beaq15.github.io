@@ -72,6 +72,7 @@ I handled this with a simple state machine and component enable/disable logic.
 ### Data Structure
 
 Here's the basic structure for the inventory itself:
+
 ```cpp
 class Inventory {
 private:
@@ -89,6 +90,7 @@ public:
 ```
 
 Each inventory slot is super simple:
+
 ```cpp
 class Slot {
 private:
@@ -102,6 +104,7 @@ public:
 };
 ```
 Last but not least, the item class:
+
 ```cpp
 class Item {
 private:
@@ -126,7 +129,7 @@ Now for the visual part - actually displaying the inventory on screen.
 I followed the template's approach of using quads with mesh renderers and materials. Here's how I set up the main inventory UI:
 ```cpp
  m_meshRenderers["Inventory"] =
-     MeshRenderer(CreateQuad(vec2(0.f), vec2(6.5f, 4.875f)), CreateMaterial(FileIO::Directory::Assets, "textures/inventory.png"));`
+     MeshRenderer(CreateQuad(vec2(0.f), vec2(6.5f, 4.875f)), CreateMaterial(FileIO::Directory::Assets, "textures/inventory.png"));
 ```
 
 The key decision here: **parenting to the UI canvas**. This ensures the inventory moves with the camera and scales properly across different screen sizes.
