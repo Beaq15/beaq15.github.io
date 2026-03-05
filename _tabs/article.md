@@ -1,6 +1,6 @@
 ---
 title: "Article"
-layout: default
+layout: page
 icon: fa-solid fa-newspaper
 order: 2
 ---
