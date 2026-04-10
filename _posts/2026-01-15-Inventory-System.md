@@ -6,16 +6,21 @@ image:
 description: Custom inventory system built from scratch in C++ with drag-and-drop, stacking, and serialization
 ---
 
+![alt text](main2.png)
+
 ## 🎓 Development Notes
 This inventory system was built entirely from scratch in C++ using a custom engine template from university, with SDL2 for rendering and ImGui for the item creation tool. The project demonstrates low-level game systems programming, including UI coordinate transformations, entity lifecycle management in an ECS architecture, and performance optimization through caching. Rather than relying on engine features like Unity or Unreal provide, I implemented every aspect myself—from pixel-perfect slot positioning to multi-digit quantity displays using individual sprite entities.
 
 ## 🎮 Project Overview
 An inventory system combining features from games like Minecraft, 7 Days to Die, and Dying Light. The system supports stackable items, drag-and-drop manipulation, context menus, and complete save/load functionality—all built without relying on external game engine UI systems.
 
+A key design goal was making the system fully designer-friendly. Any aspect of the inventory — the number of slot groups, their dimensions and spacing, icon sprite sheets, popup layout, and button positioning — can be configured at runtime through ImGui without touching a single line of C++. Swapping in a completely different visual style is as simple as changing a texture path and hitting reload, making it straightforward to create anything from a minimal hotbar to a complex multi-grid inventory.
+
 **Tech Stack:** C++, SDL2, OpenGL, ImGui, nlohmann/json, Custom ECS
 
 **Key Features:**
-
+- Fully configurable layout — slot groups, grid dimensions, spacing, and icon paths set through ImGui at runtime
+- Swap inventory visuals entirely by changing texture paths, no code required
 - Custom item creation tool for designers (no code required)
 - Drag-and-drop with left-click (move all) and right-click (split stack) support
 - Multi-digit quantity displays using individual sprite entities
@@ -95,62 +100,109 @@ private:
 }
 ```
 ## 🔧 UI Implementation
+### InventoryLayoutConfig
+Before any slots are positioned or rendered, all layout parameters flow through a single `InventoryLayoutConfig` struct in the `graphics2d` namespace. Every rendering and hit-detection calculation references this struct directly, so changing a value — slot count, spacing, popup size, button offset — propagates instantly through the entire system without touching any other code.
+
+The struct holds a vector of `SlotGroup` entries, meaning the inventory isn't limited to a fixed hotbar + grid layout. Any number of groups can be added, each with its own row/column count, size, and spacing. The default values are calibrated to match the initial design, but everything can be overridden at runtime through the ImGui panel.
+
+![](graphics2d.png)
+*The graphics2d namespace — shared state and utilities accessible by any file without coupling to a specific game class*
+```cpp
+struct SlotGroup
+{
+    std::string name = "New Group";
+    int rows = 1;
+    int cols = 1;
+
+    float startOffsetX = 0.f;
+    float startOffsetY = 0.f;
+    float colSpacing = 0.f;
+    float rowSpacing = 0.f;
+    float slotSize = 1.f;
+    float iconSize = 0.78f;
+};
+
+struct InventoryLayoutConfig
+{
+    std::vector<SlotGroup> slotGroups = {
+        { "Hot Bar",   1, 10, -0.02f,  0.9f,  0.f,   0.f,   5.43f, 0.78f },
+        { "Main Grid", 5,  6,  1.64f,  0.76f, 0.f,   0.09f, 3.26f, 0.78f }
+    };
+
+    // Icon position
+    float iconOffsetX = 0.0f;
+    float iconOffsetY = -1.06f;
+
+    // Inventory dimensions
+    float invAspectRatio = 150.0f / 200.0f;
+    float invTextureScale = 5.84f;
+
+    int TotalSlots() const {
+        int total = 0;
+        for (auto& g : slotGroups) total += g.rows * g.cols;
+        return total;
+    }
+
+    // Popup
+    float popupOffsetX = -8.5f;
+    float popupOffsetY = 0.0f;
+    float popupWidth = 4.0f;
+    float popupHeight = 5.0f;
+
+    // Popup buttons
+    float buttonWidth = 1.1f;
+    float buttonHeight = 0.4f;
+    float buttonSpacing = 0.15f;
+    float buttonOffsetY = -1.35f;
+};
+```
+![alt text](inventoryvariables-1.png)
+
+*All inventory layout variables exposed in the ImGui panel — slot groups, icon offsets, popup dimensions, and button placement, all editable at runtime*
+
+To avoid unnecessary GPU resource allocation, texture reloading is gated behind an explicit reload button rather than triggering on every keystroke, since each path change requires mesh and material recreation. Layout parameters update in real time as they only affect transform calculations.
+
+![alt text](paths.png)
+
+*Texture path fields for the inventory background, popup, and sprite sheet — Reload recreates the materials without restarting the project*
+
 ### Positioning the Inventory Slots
-One of the most challenging aspects was positioning 40 invisible slot entities to perfectly align with the inventory texture.
+With all parameters centralised in `InventoryLayoutConfig`, slot creation is fully data-driven. Instead of separate hardcoded loops for the hotbar and grid, a single loop iterates over every `SlotGroup` and derives each slot's position from that group's own row count, column count, size, and spacing values. Adding a new slot section to the inventory requires no changes to the positioning code at all — just a new entry in the `slotGroups` vector.
 
-### Layout Math:
-The inventory texture is 200x150 pixels, displayed as a 6.5 x 4.875 world-space quad with:
-
-- 10 slots in the top row (hotbar)
-- 6 columns × 5 rows on the right side (storage grid)
-
-### Hotbar Positioning (Slots 0-9):
+Each group calculates its own `baseX` and `baseY` as the top-left origin, then steps through rows and columns applying the group's spacing and offset values:
 ```cpp
-const int numVisibleSlots = 10;
-float slotSize = invWidth / 10.f; // = 0.65
-
-float firstSlotCenterX = -invWidth / 2.0f + slotSize / 2.0f;
-float topRowCenterY = invHeight / 2.0f - slotSize / 2.0f;
-
-for (int i = 0; i < numVisibleSlots; i++)
+for (auto& group : GetLayoutConfig().slotGroups)
 {
-    float iconScale = slotSize * 0.8f;
-    float offsetX = slotSize * 0.25f;
-    float offsetY = -slotSize * 0.35f;
+    float invWidth = group.slotSize * m_invScale;
+    float invHeight = invWidth * GetLayoutConfig().invAspectRatio;
 
-    float x = firstSlotCenterX + ((slotSize - 0.04f) * i) + offsetX;
-    float y = topRowCenterY + offsetY;
+    float slotSize = invWidth / (float)group.cols;
 
-    iconTransform.SetTranslation(vec3(x, y, 26.f)); // Z=26 renders above inventory
-    iconTransform.SetScale(vec3(iconScale));
+    float baseX = -invWidth / 2.f + slotSize / 2.f;
+    float baseY = invHeight / 2.f - slotSize / 2.f;
+
+    float iconScale = slotSize * group.iconSize;
+
+    for (int row = 0; row < group.rows; row++)
+    {
+        for (int col = 0; col < group.cols; col++)
+        {
+            float x = baseX + (slotSize + group.colSpacing) * col
+                + group.startOffsetX + GetLayoutConfig().iconOffsetX;
+            float y = baseY - (slotSize + group.rowSpacing) * row
+                + group.startOffsetY + GetLayoutConfig().iconOffsetY;
+
+            iconTransform.SetTranslation(vec3(x, y, 0.2f));
+            iconTransform.SetScale(vec3(iconScale));
+
+            globalIdx++;
+        }
+    }
 }
 ```
+![alt text](inventory2.png)
+*Slot boundaries visualized with debug lines — yellow outlines mark each slot's hit region*
 
-### Storage Grid Positioning (Slots 10-39):
-```cpp
-const int rightGridStartIdx = 10;
-const int rightGridRows = 5;
-const int rightGridCols = 6;
-
-float rightSlotSizeY = slotSize * 1.15f; // Taller slots for grid
-float rightGridStartX = firstSlotCenterX + ((slotSize - 0.05f) * 4) + 0.05f;
-float rightGridStartY = topRowCenterY - (slotSize * 2) + 0.25f;
-
-for (int i = rightGridStartIdx; i < rightGridStartIdx + (rightGridRows * rightGridCols); i++)
-{
-    int gridIdx = i - rightGridStartIdx;
-    int row = gridIdx / rightGridCols;
-    int col = gridIdx % rightGridCols;
-
-    float x = rightGridStartX + ((slotSize - 0.05f) * col) + offsetX;
-    float y = rightGridStartY - ((rightSlotSizeY - 0.05f) * row) + offsetY;
-
-    iconTransform.SetTranslation(vec3(x, y, 26.f));
-}
-```
-
-![alt text](../assets/inventorysystem/slots.png)
-*Debug visualization showing slot boundaries for alignment*
 ### Multi-Digit Quantity Display
 Instead of rendering text dynamically (expensive), the system uses individual digit sprites (0-9) combined to show any number.
 ### The Approach:
@@ -179,99 +231,111 @@ for (int d = 0; d < numDigits; d++)
 ```
 ![alt text](../assets/inventorysystem/numbers.png)
 
+*Any quantity rendered by combining individual digit sprites positioned side-by-side*
+
 ## 💫 Item Management
 ### Item Creation Tool
-Built a visual editor using ImGui allowing designers to create items without code. Features include:
-
-- Input fields for name, description, type, and stacking behavior
-- Visual sprite sheet selection with clickable boxes
-- Pre-configured sprite regions per item type
+The ImGui item creation panel lets designers create items entirely at runtime without touching any C++ code. Item types — such as Potion, Armour, Weapon, and Valuable — are stored in a `m_itemTypes` vector rather than a hardcoded enum, meaning new categories can be added, renamed, or removed live in the panel. Each type defines which region of the sprite sheet it maps to via `minX`, `maxX`, `minY`, `maxY` coordinates:
 ```cpp
-void ItemCreation::GetSpriteRangeForType(ItemType type, int& minX, int& maxX, int& minY, int& maxY)
-{
-    switch (type)
-    {
-    case ItemType::Potion:
-        minX = 0; maxX = 6;
-        minY = 0; maxY = 0;
-        break;
-    case ItemType::Armour:
-        minX = 4; maxX = 7;
-        minY = 3; maxY = 5;
-        break;
-    // ... other types
-    }
-}
+m_itemTypes = {
+{ "Potion",   0, 6,  0, 0  },
+{ "Armour",   4, 7,  3, 5  },
+{ "Valuable", 7, 15, 0, 10 },
+{ "Weapon",   0, 3,  4, 8  }
+};
 ```
-![alt text](../assets/inventorysystem/imgui.png)
+Selecting a type in the panel filters the sprite picker to only show icons from that region. The picker renders each sprite as a clickable ImGui image button by computing its UV coordinates from the sheet dimensions, with the selected sprite highlighted in green:
+
+![alt text](itemtypes-1.png)
+
+*Item type definitions panel — each type maps to a sprite sheet region, and types can be added or removed without touching code*
+
+When the designer clicks "Create Item", the system generates a unique key from the item's name and sprite coordinates, registers both a mesh renderer and an Item entry in the shared databases, and spawns the item as a world entity directly in front of the player:
+
+```cpp
+std::string uniqueKey = names[i] + "_" +
+    std::to_string(spriteXCoords[i]) + "_" +
+    std::to_string(spriteYCoords[i]) + "_" +
+    std::to_string(i);
+
+graphics2d::m_itemDatabase[uniqueKey] = new Item(
+    names[i], descriptions[i],
+    graphics2d::m_iconSpriteSheetPath,
+    types[i],
+    spriteXCoords[i], spriteYCoords[i],
+    isStackable[i], stackSizes[i]
+);
+
+glm::vec2 spawnPos2D = playerPos + glm::vec2(2.0f, 0.0f);
+auto entity = ecs.CreateEntity();
+ecs.CreateComponent<ItemPickup>(entity, uniqueKey);
+```
 
 ### Stacking Logic
-When adding items, the system intelligently handles stacking:
+When adding items, the system first scans existing slots for a matching stackable item with space remaining, filling those before opening a new slot:
 ```cpp
-if (item->IsStackable())
+for (int i = 0; i < m_slots.size(); i++)
 {
-    // First pass: fill existing stacks
-    for (int i = 0; i < m_slots.size(); i++)
+    if (m_slots[i].IsEmpty())
+        continue;
+
+    Item* existingItem = m_slots[i].GetItem();
+
+    if (existingItem == item || existingItem->IsSameItem(*item))
     {
-        Item* existingItem = m_slots[i].GetItem();
-        
-        if (existingItem && existingItem->IsSameItem(*item))
+        int currentQty = m_slots[i].GetQuantity();
+        int maxStack = existingItem->GetMaxStackSize();
+        int spaceAvailable = maxStack - currentQty;
+
+        if (spaceAvailable > 0)
         {
-            int spaceAvailable = existingItem->GetMaxStackSize() - m_slots[i].GetQuantity();
-            
-            if (spaceAvailable > 0)
-            {
-                int amountToAdd = std::min(spaceAvailable, quantity);
-                m_slots[i].AddQuantity(amountToAdd);
-                quantity -= amountToAdd;
-                
-                if (quantity == 0) return true;
-            }
+            int amountToAdd = std::min(spaceAvailable, quantity);
+            m_slots[i].AddQuantity(amountToAdd);
+            quantity -= amountToAdd;
+
+            if (quantity == 0)
+                return true;
         }
-    }
-    
-    // Second pass: create new stacks if items remain
-    if (quantity > 0)
-    {
-        int emptySlot = FindEmptySlot();
-        if (emptySlot == -1) return false;
-        
-        m_slots[emptySlot].SetItem(item);
-        m_slots[emptySlot].SetQuantity(quantity);
     }
 }
 
+if (quantity > 0)
+{
+    int emptySlot = FindEmptySlot();
+    if (emptySlot == -1)
+        return false;
+
+    m_slots[emptySlot].SetItem(item);
+    m_slots[emptySlot].SetQuantity(quantity);
+    return true;
+}
 ```
-<video width="320" height="240" controls>
-  <source src="/assets/inventorysystem/stacking.mp4" type="video/mp4" alt="Stacking">
-</video>
+<video controls src="stacking.mp4" title="Title"></video>
 
 ## 🎭 Interaction Systems
 ### Hover Detection & Coordinate Transformation
-Converting mouse position through multiple coordinate spaces to check slot collision:
+To detect which slot the mouse is hovering over, I convert the mouse position from screen space into the same coordinate space the inventory slots live in — UI canvas space. I normalize the mouse position against the screen size and remap it to the canvas dimensions, then do a simple AABB check against each slot's position:
 ```cpp
-// Convert mouse from screen space to world space
-float mouseWorldX = cameraTransform.GetTranslation().x + 
-                    (mouseScreenPos.x / screenWidth - 0.5f) * worldWidth;
-float mouseWorldY = cameraTransform.GetTranslation().y - 
-                    (mouseScreenPos.y / screenHeight - 0.5f) * worldHeight;
+glm::vec2 mouseUIPos = {
+    (mouseScreenPos.x / screenWidth) * canvasSize.x - canvasSize.x / 2.f,
+    -(((mouseScreenPos.y / screenHeight) * canvasSize.y - canvasSize.y / 2.f)) + 1.05f
+};
 
-// AABB collision check
-float minX = slotCenterX - slotSize / 2.0f;
-float maxX = slotCenterX + slotSize / 2.0f;
-float minY = slotCenterY - slotSize / 2.0f;
-float maxY = slotCenterY + slotSize / 2.0f;
+float slotCenterX = baseX + (slotSize + group.colSpacing) * col
+    + group.startOffsetX;
+float slotCenterY = baseY - (slotSize + group.rowSpacing) * row
+    + group.startOffsetY;
 
-if (mouseWorldX >= minX && mouseWorldX <= maxX &&
-    mouseWorldY >= minY && mouseWorldY <= maxY)
+if (mouseUIPos.x >= minX && mouseUIPos.x <= maxX &&
+    mouseUIPos.y >= minY && mouseUIPos.y <= maxY)
 {
-    currentHoveredSlot = i;
-    iconTransform.SetScale(vec3(iconScale * 1.1f)); // 10% larger when hovered
+    currentHoveredSlot = globalIdx;
 }
 ```
+If a slot is hit, its icon scales up by 10% as visual feedback.
 
 ### Item Popup System
-Popup displays item name/description using SDL_ttf for text rendering. Three action buttons (Use, Equip, Drop) are part of the popup sprite with invisible collision boxes for click detection.
+Popup displays item name/description using SDL_ttf for text rendering. Three action buttons (Use, Equip, Drop) are part of the popup sprite with invisible collision boxes for click detection. The popup can be locked in place by clicking on an item, keeping it visible when moving the mouse away, and unlocks when clicking outside the inventory.
 ```cpp
 void UpdatePopupText(const std::string& itemName, const std::string& itemDescription)
 {
@@ -292,9 +356,7 @@ void UpdatePopupText(const std::string& itemName, const std::string& itemDescrip
     }
 }
 ```
-<video width="320" height="240" controls>
-  <source src="/assets/inventorysystem/hovering.mp4" type="video/mp4" alt="Hovering">
-</video>
+<video controls src="hovering.mp4" title="Title"></video>
 
 ## ⚙️ Advanced Features
 ### Drag and Drop System
@@ -347,6 +409,34 @@ if ((!leftButton && !rightButton) && m_isDragging)
 }
 ```
 
+After implementing drag and drop, I added a m_wasClick flag to distinguish between actual clicks (for locking the popup) and drag operations, and modified hover detection to not interfere when the popup is locked or actively dragging:
+
+```cpp
+// Modified hover detection to handle interaction states
+if (!m_popupLocked && !m_isDragging)
+{
+    if (currentHoveredSlot != m_hoveredSlotIndex)
+    {
+        if (m_hoveredSlotIndex != -1)
+            OnSlotHoverExit(m_hoveredSlotIndex);
+        if (currentHoveredSlot != -1)
+            OnSlotHoverEnter(currentHoveredSlot);
+        m_hoveredSlotIndex = currentHoveredSlot;
+    }
+}
+
+// Distinguish clicks from drags
+if (m_wasClick && !m_isDragging)
+{
+    if (currentHoveredSlot != -1)
+    {
+        m_popupLocked = true;
+        m_selectedSlotIndex = currentHoveredSlot;
+    }
+    m_wasClick = false;
+}
+```
+
 <video width="320" height="240" controls>
   <source src="/assets/inventorysystem/draganddrop.mp4" type="video/mp4" alt="DragAndDrop">
 </video>
@@ -354,22 +444,20 @@ if ((!leftButton && !rightButton) && m_isDragging)
 ### Item Actions
 **Use (Potions):**
 ```cpp
-void UseItem(int slotIndex, Item* item)
+void InventoryUI::UseItem(int slotIndex, Item* item)
 {
-    if (item->GetType() == ItemType::Potion)
-    {
-        int currentHealth = playerControl->GetHealth();
-        int maxHealth = playerControl->GetMaxHealth();
+    if (!item)
+        return;
 
-        if (currentHealth < maxHealth)
-        {
-            int newHealth = std::min(currentHealth + 1, maxHealth);
-            playerControl->SetHealth(newHealth);
-            m_playerInventory->RemoveItem(slotIndex, 1);
-        }
-    }
+    m_playerInventory->RemoveItem(slotIndex, 1);
+    printf("Used item: %s\n", item->GetName().c_str());
+    m_popupLocked = false;
+    m_selectedSlotIndex = -1;
+    m_hoveredSlotIndex = -1;
+    HidePopup();
 }
 ```
+**it only removes the item from the inventory **
 
 **Drop:**
 ```cpp
@@ -411,53 +499,112 @@ if (ecs.Registry.valid(m_equippedItem))
 
 ## 💾 Serialization System
 ### JSON Save/Load
-Due to compilation conflicts between Windows headers (from OpenGL) and C++17's std::byte, serialization code was separated into dedicated files with forward declarations.
+Due to compilation conflicts between Windows headers (from OpenGL) and C++17's std::byte, serialization code was separated into dedicated files with forward declarations to avoid the symbol ambiguity while keeping full functionality.
 
-**Collecting Data:**
+The save file bundles two things together into a single SaveData struct: the item data (definitions and world spawn positions) and the full layout configuration. This means an entire session — every item, its position in the world, and every layout parameter tweaked in ImGui — can be saved and restored exactly as left.
+
+Collecting item data gathers every entry in the item database along with all current world-space spawn positions from ECS entities:
+
 ```cpp
 LevelItemData ItemCreation::CollectItemData() const
 {
     LevelItemData data;
-    
-    // Collect item definitions from database
-    for (const auto& [itemID, item] : platformer.GetItemDataBase())
+
+    for (const auto& [itemID, item] : graphics2d::m_itemDatabase)
     {
         ItemDefinitionData def;
-        def.itemID = itemID;
-        def.name = item->GetName();
+        def.itemID      = itemID;
+        def.name        = item->GetName();
         def.description = item->GetDescription();
-        def.spriteX = item->GetSpriteX();
-        def.spriteY = item->GetSpriteY();
+        def.texturePath = item->GetTexturePath();
+        def.type        = item->GetType();
+        def.stackable   = item->IsStackable();
+        def.maxStackSize = item->GetMaxStackSize();
+        def.spriteX     = item->GetSpriteX();
+        def.spriteY     = item->GetSpriteY();
         data.definitions.push_back(def);
     }
-    
-    // Collect spawn positions
-    for (const auto& [entity, pickup, transform] : 
-         ecs.Registry.view<ItemPickup, Transform>().each())
+
+    for (const auto& [entity, pickup, transform] :
+         ecs.Registry.view<ItemPickup, bee::Transform>().each())
     {
         ItemSpawnData spawn;
-        spawn.itemID = pickup.m_itemName;
+        spawn.itemID   = pickup.m_itemName;
         spawn.position = glm::vec2(transform.GetTranslation());
         data.spawns.push_back(spawn);
     }
-    
+
     return data;
 }
 ```
-<video width="320" height="240" controls>
-  <source src="/assets/inventorysystem/saveandload.mp4" type="video/mp4" alt="SaveAndLoad">
-</video>
+Collecting layout data snapshots the entire `InventoryLayoutConfig` — icon offsets, inventory scale, popup dimensions, button placement, all texture paths, sprite sheet dimensions, item type definitions, and every slot group:
+```cpp
+InventoryLayoutData ItemCreation::CollectLayoutData() const
+{
+    InventoryLayoutData data;
+    const auto& cfg = ...GetLayoutConfig();
+
+    data.iconOffsetX          = cfg.iconOffsetX;
+    data.iconOffsetY          = cfg.iconOffsetY;
+    data.invTextureScale      = cfg.invTextureScale;
+    data.iconSpriteSheetPath  = graphics2d::m_iconSpriteSheetPath;
+    data.inventoryPath        = graphics2d::m_inventoryPath;
+    data.popupPath            = graphics2d::m_popupPath;
+    data.popupOffsetX         = cfg.popupOffsetX;
+    data.popupOffsetY         = cfg.popupOffsetY;
+    data.popupWidth           = cfg.popupWidth;
+    data.popupHeight          = cfg.popupHeight;
+    data.buttonWidth          = cfg.buttonWidth;
+    data.buttonHeight         = cfg.buttonHeight;
+    data.buttonSpacing        = cfg.buttonSpacing;
+    data.buttonOffsetY        = cfg.buttonOffsetY;
+    // ...
+
+    for (const auto& t : m_itemTypes)
+        data.itemTypes.push_back({ t.name, t.minX, t.maxX, t.minY, t.maxY });
+
+    for (const auto& group : cfg.slotGroups)
+    {
+        SlotGroupData gd;
+        gd.name         = group.name;
+        gd.rows         = group.rows;
+        gd.cols         = group.cols;
+        gd.startOffsetX = group.startOffsetX;
+        gd.startOffsetY = group.startOffsetY;
+        gd.colSpacing   = group.colSpacing;
+        gd.rowSpacing   = group.rowSpacing;
+        gd.slotSize     = group.slotSize;
+        gd.iconSize     = group.iconSize;
+        data.slotGroups.push_back(gd);
+    }
+
+    return data;
+}
+```
+
+On load, `ApplyLayoutData` writes all values back into the live `InventoryLayoutConfig`, clears and reconstructs the item type list and slot groups, then calls `RebuildInventory`, `ReloadTextures`, and U`pdateInventoryLayout` in sequence to fully restore the session state.
+
+<video controls src="saveandload.mp4" title="Title"></video>
+<video controls src="serialization.mp4" title="Title"></video>
+
+## Here are two examples showing how differently the system can be configured:
+
+![alt text](inventory2-1.png) 
+![alt text](inventory1.png) 
+<video controls src="demo2.mp4" title="alt text"></video> 
+<video controls src="demo1.mp4" title="Title"></video>
 
 ## 🎯 Key Achievements
 
 - Built complete inventory system from scratch without relying on engine UI features
-- Implemented pixel-perfect slot positioning through complex coordinate transformations
 - Solved performance challenges through caching and entity lifecycle management
 - Created designer-friendly tools enabling item creation without code
 - Designed intuitive drag-and-drop with split-stack functionality
 - Developed multi-digit display system using individual sprite entities
 - Implemented full serialization supporting save/load of entire item layouts
 - Integrated seamlessly with ECS architecture for consistent item behavior
+- Ported the system into a second project (RTS), demonstrating engine-agnostic reusability
+- Designed clean encapsulation through the graphics2d namespace and validated public APIs
 
 
 ## 📚 References
