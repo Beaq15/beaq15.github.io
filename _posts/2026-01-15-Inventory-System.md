@@ -6,7 +6,7 @@ image:
 description: Custom inventory system built from scratch in C++ with drag-and-drop, stacking, and serialization
 ---
 
-![alt text](main2.png)
+![alt text](/assets/inventorysystem/main2.png)
 
 ## 🎓 Development Notes
 This inventory system was built entirely from scratch in C++ using a custom engine template from university, with SDL2 for rendering and ImGui for the item creation tool. The project demonstrates low-level game systems programming, including UI coordinate transformations, entity lifecycle management in an ECS architecture, and performance optimization through caching. Rather than relying on engine features like Unity or Unreal provide, I implemented every aspect myself—from pixel-perfect slot positioning to multi-digit quantity displays using individual sprite entities.
@@ -105,7 +105,7 @@ Before any slots are positioned or rendered, all layout parameters flow through 
 
 The struct holds a vector of `SlotGroup` entries, meaning the inventory isn't limited to a fixed hotbar + grid layout. Any number of groups can be added, each with its own row/column count, size, and spacing. The default values are calibrated to match the initial design, but everything can be overridden at runtime through the ImGui panel.
 
-![](graphics2d.png)
+![](/assets/inventorysystem/graphics2d.png)
 *The graphics2d namespace — shared state and utilities accessible by any file without coupling to a specific game class*
 ```cpp
 struct SlotGroup
@@ -156,13 +156,13 @@ struct InventoryLayoutConfig
     float buttonOffsetY = -1.35f;
 };
 ```
-![alt text](inventoryvariables-1.png)
+![alt text](/assets/inventorysystem/inventoryvariables-1.png)
 
 *All inventory layout variables exposed in the ImGui panel — slot groups, icon offsets, popup dimensions, and button placement, all editable at runtime*
 
 To avoid unnecessary GPU resource allocation, texture reloading is gated behind an explicit reload button rather than triggering on every keystroke, since each path change requires mesh and material recreation. Layout parameters update in real time as they only affect transform calculations.
 
-![alt text](paths.png)
+![alt text](/assets/inventorysystem/paths.png)
 
 *Texture path fields for the inventory background, popup, and sprite sheet — Reload recreates the materials without restarting the project*
 
@@ -200,7 +200,7 @@ for (auto& group : GetLayoutConfig().slotGroups)
     }
 }
 ```
-![alt text](inventory2.png)
+![alt text](/assets/inventorysystem/inventory2.png)
 *Slot boundaries visualized with debug lines — yellow outlines mark each slot's hit region*
 
 ### Multi-Digit Quantity Display
@@ -229,7 +229,7 @@ for (int d = 0; d < numDigits; d++)
     // Create and position individual digit sprite
 }
 ```
-![alt text](../assets/inventorysystem/numbers.png)
+![alt text](/assets/inventorysystem/numbers.png)
 
 *Any quantity rendered by combining individual digit sprites positioned side-by-side*
 
@@ -246,7 +246,7 @@ m_itemTypes = {
 ```
 Selecting a type in the panel filters the sprite picker to only show icons from that region. The picker renders each sprite as a clickable ImGui image button by computing its UV coordinates from the sheet dimensions, with the selected sprite highlighted in green:
 
-![alt text](itemtypes-1.png)
+![alt text](/assets/inventorysystem/itemtypes.png)
 
 *Item type definitions panel — each type maps to a sprite sheet region, and types can be added or removed without touching code*
 
@@ -310,7 +310,9 @@ if (quantity > 0)
     return true;
 }
 ```
-<video controls src="stacking.mp4" title="Title"></video>
+<video width="320" height="240" controls>
+  <source src="/assets/inventorysystem/stacking.mp4" type="video/mp4">
+</video>
 
 ## 🎭 Interaction Systems
 ### Hover Detection & Coordinate Transformation
@@ -356,7 +358,9 @@ void UpdatePopupText(const std::string& itemName, const std::string& itemDescrip
     }
 }
 ```
-<video controls src="hovering.mp4" title="Title"></video>
+<video width="320" height="240" controls>
+  <source src="/assets/inventorysystem/hovering.mp4" type="video/mp4">
+</video>
 
 ## ⚙️ Advanced Features
 ### Drag and Drop System
@@ -457,7 +461,6 @@ void InventoryUI::UseItem(int slotIndex, Item* item)
     HidePopup();
 }
 ```
-**it only removes the item from the inventory **
 
 **Drop:**
 ```cpp
@@ -582,17 +585,26 @@ InventoryLayoutData ItemCreation::CollectLayoutData() const
 }
 ```
 
-On load, `ApplyLayoutData` writes all values back into the live `InventoryLayoutConfig`, clears and reconstructs the item type list and slot groups, then calls `RebuildInventory`, `ReloadTextures`, and U`pdateInventoryLayout` in sequence to fully restore the session state.
+On load, `ApplyLayoutData` writes all values back into the live `InventoryLayoutConfig`, clears and reconstructs the item type list and slot groups, then calls `RebuildInventory`, `ReloadTextures`, and `UpdateInventoryLayout` in sequence to fully restore the session state.
 
-<video controls src="saveandload.mp4" title="Title"></video>
-<video controls src="serialization.mp4" title="Title"></video>
+<video width="320" height="240" controls>
+  <source src="/assets/inventorysystem/saveandload.mp4" type="video/mp4">
+</video>
+<video width="320" height="240" controls>
+  <source src="/assets/inventorysystem/serialization.mp4" type="video/mp4">
+</video>
 
 ## Here are two examples showing how differently the system can be configured:
 
-![alt text](inventory2-1.png) 
-![alt text](inventory1.png) 
-<video controls src="demo2.mp4" title="alt text"></video> 
-<video controls src="demo1.mp4" title="Title"></video>
+![alt text](/assets/inventorysystem/inventory2.png) 
+![alt text](/assets/inventorysystem/inventory1.png) 
+
+<video width="320" height="240" controls>
+  <source src="/assets/inventorysystem/demo2.mp4" type="video/mp4">
+</video>
+<video width="320" height="240" controls>
+  <source src="/assets/inventorysystem/demo1.mp4" type="video/mp4">
+</video>
 
 ## 🎯 Key Achievements
 
