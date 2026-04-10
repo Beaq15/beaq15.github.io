@@ -156,7 +156,7 @@ struct InventoryLayoutConfig
     float buttonOffsetY = -1.35f;
 };
 ```
-![alt text](/assets/inventorysystem/inventoryvariables-1.png)
+![alt text](/assets/inventorysystem/inventoryvariables.png)
 
 *All inventory layout variables exposed in the ImGui panel — slot groups, icon offsets, popup dimensions, and button placement, all editable at runtime*
 
