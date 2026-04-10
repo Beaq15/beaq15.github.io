@@ -157,13 +157,11 @@ struct InventoryLayoutConfig
 };
 ```
 ![alt text](/assets/inventorysystem/inventoryvariables.png)
-
 *All inventory layout variables exposed in the ImGui panel — slot groups, icon offsets, popup dimensions, and button placement, all editable at runtime*
 
 To avoid unnecessary GPU resource allocation, texture reloading is gated behind an explicit reload button rather than triggering on every keystroke, since each path change requires mesh and material recreation. Layout parameters update in real time as they only affect transform calculations.
 
 ![alt text](/assets/inventorysystem/paths.png)
-
 *Texture path fields for the inventory background, popup, and sprite sheet — Reload recreates the materials without restarting the project*
 
 ### Positioning the Inventory Slots
@@ -230,7 +228,6 @@ for (int d = 0; d < numDigits; d++)
 }
 ```
 ![alt text](/assets/inventorysystem/numbers.png)
-
 *Any quantity rendered by combining individual digit sprites positioned side-by-side*
 
 ## 💫 Item Management
@@ -247,7 +244,6 @@ m_itemTypes = {
 Selecting a type in the panel filters the sprite picker to only show icons from that region. The picker renders each sprite as a clickable ImGui image button by computing its UV coordinates from the sheet dimensions, with the selected sprite highlighted in green:
 
 ![alt text](/assets/inventorysystem/itemtypes.png)
-
 *Item type definitions panel — each type maps to a sprite sheet region, and types can be added or removed without touching code*
 
 When the designer clicks "Create Item", the system generates a unique key from the item's name and sprite coordinates, registers both a mesh renderer and an Item entry in the shared databases, and spawns the item as a world entity directly in front of the player:
