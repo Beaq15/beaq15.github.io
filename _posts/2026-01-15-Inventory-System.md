@@ -9,7 +9,7 @@ description: Custom inventory system built from scratch in C++ with drag-and-dro
 ![alt text](/assets/inventorysystem/main2.png)
 
 ## 🎓 Development Notes
-This inventory system was built entirely from scratch in C++ using a custom engine template from university, with SDL2 for rendering and ImGui for the item creation tool. The project demonstrates low-level game systems programming, including UI coordinate transformations, entity lifecycle management in an ECS architecture, and performance optimization through caching. Rather than relying on engine features like Unity or Unreal provide, I implemented every aspect myself—from pixel-perfect slot positioning to multi-digit quantity displays using individual sprite entities.
+This inventory system was built entirely from scratch in C++ using a custom engine template from university, with SDL2 for text rendering and ImGui for the item creation tool. The project demonstrates low-level game systems programming, including UI coordinate transformations, entity lifecycle management in an ECS architecture, and performance optimization through caching. Rather than relying on engine features like Unity or Unreal provide, I implemented every aspect myself—from pixel-perfect slot positioning to multi-digit quantity displays using individual sprite entities.
 
 ## 🎮 Project Overview
 An inventory system combining features from games like Minecraft, 7 Days to Die, and Dying Light. The system supports stackable items, drag-and-drop manipulation, context menus, and complete save/load functionality—all built without relying on external game engine UI systems.
