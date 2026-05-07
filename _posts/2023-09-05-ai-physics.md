@@ -3,7 +3,7 @@ title: "AI&Physics"
 categories: [Projects]
 image: 
   path: /assets/ai&physics/picture.png
-description: Custom 2D AI pathfinding and physics system built without an engine
+description: Custom 2D AI pathfinding and physics system built in a custom engine
 ---
 
 ## 🎓 Development Notes
