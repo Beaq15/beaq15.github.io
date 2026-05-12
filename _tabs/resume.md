@@ -9,5 +9,7 @@ order: 2
 {: .prompt-tip}
 
 ![PDF as jpg](/assets/cv1.png)
+
 ![PDF as jpg](/assets/cv2.png)
+
 ![PDF as jpg](/assets/cv3.png)
